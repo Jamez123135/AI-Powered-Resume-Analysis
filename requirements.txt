@@ -4,4 +4,6 @@ pdfminer.six
 PyPDF2
 werkzeug
 uuid
-gunicorn==20.1.0
+spacy
+gunicorn
+re
