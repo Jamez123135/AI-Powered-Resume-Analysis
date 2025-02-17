@@ -9,7 +9,6 @@ pytest==8.3.4
 requests==2.32.3
 sqlalchemy==2.0.38
 transformers==4.48.3
-torch==2.6.0+cu118
-torchvision==0.21.0+cu118
+torch==2.0.1
 tqdm==4.67.1
 pydantic==1.10.21
