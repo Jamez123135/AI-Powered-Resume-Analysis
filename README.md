@@ -1,48 +1,91 @@
-AI-Powered Resume Analysis Platform
-Project Overview
-This AI-powered web application analyzes resumes against job descriptions to provide a compatibility score. It serves both job seekers and recruiters by extracting relevant skills, experiences, and education details. Recruiters can upload multiple resumes and rank them based on job fit.
-Features
-Resume Parsing: Extracts skills, experience, and education details.
-Job Description Matching: Compares extracted resume data with job descriptions to calculate a match percentage.
-Recruiter Dashboard: Allows recruiters to upload multiple resumes and rank candidates based on compatibility.
-Job Seeker Dashboard: Enables job seekers to analyze their resume against a specific job posting.
-Modern UI: A clean and responsive user interface built with Bootstrap and JavaScript.
-Tech Stack
-Backend: Python (Flask)
-Frontend: HTML, CSS, JavaScript, Bootstrap
-Parsing & Analysis: Natural Language Processing (NLP) techniques
-Storage: File uploads handled with Flask
-Setup Instructions
-1. Clone the Repository
-git clone https://github.com/jamez123135/resume-analysis.git
-cd resume-analysis
+# CareerConnect - AI-Powered Resume Analysis
 
-2. Create a Virtual Environment & Install Dependencies
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
+🚀 **CareerConnect** is an **AI-powered resume analysis platform** that helps job seekers optimize their resumes by comparing them with job descriptions. Recruiters can also upload multiple resumes to rank candidates based on skill compatibility.
+
+---
+
+## 🔍 Features
+
+✅ **Resume Parsing & Skill Extraction** – Uses **SpaCy NLP** to extract key skills from uploaded PDFs.  
+✅ **Job Description Matching** – Compares resume skills with job descriptions using **PhraseMatcher & NER**.  
+✅ **Compatibility Scoring** – Calculates a match percentage and provides feedback.  
+✅ **Recruiter Dashboard** – Upload multiple resumes and rank candidates by job fit.  
+✅ **Modern UI** – Built with **Bootstrap** for a clean, responsive user interface.  
+
+---
+
+## 🛠️ Tech Stack
+
+| Category         | Technologies Used  |
+|----------------|-------------------|
+| **Frontend** | HTML, CSS, Bootstrap |
+| **Backend** | Flask (Python), Jinja2 |
+| **NLP & AI** | SpaCy, PhraseMatcher, Named Entity Recognition (NER) |
+| **Database** | SQLite / PostgreSQL |
+| **File Handling** | PyPDF2 |
+| **Dev Tools** | Git, GitHub, PyCharm |
+
+---
+
+## 🚀 Getting Started
+
+### 1️⃣ Clone the Repository
+```sh
+git clone https://github.com/jamez123135/careerconnect.git
+cd careerconnect
+```
+
+### 2️⃣ Install Dependencies
+Make sure you have Python installed, then run:
+```sh
 pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+```
 
-3. Run the Flask App
-python app.py
+### 3️⃣ Run the Application
+```sh
+flask run
+```
+Then, open **http://127.0.0.1:5000/** in your browser.
 
-4. Access the Web App
-Open http://127.0.0.1:5000/ in your browser.
-Project Structure
-resume-analysis/
-│── app.py                 # Main Flask application
-│── requirements.txt       # Python dependencies
-│── static/                # CSS, JavaScript, images
-│── templates/             # HTML templates
-│── uploads/               # Directory for uploaded resumes
-└── README.md              # Project documentation
+---
 
-Future Enhancements
-Implement AI-powered recommendations for skill improvement
-Improve resume parsing accuracy with ML models
-Support additional file formats (e.g., DOCX)
-Contributors
-James Akhator (Lead Developer)
-John-Paul Akhator 
-Open for contributions! Fork the repo and submit a pull request.
-License
-This project is open-source under the MIT License.
+## 📂 Project Structure
+```
+careerconnect/
+│── static/                 # CSS & JS files  
+│── templates/              # HTML templates (Job Seekers, Recruiters)  
+│── app.py                  # Main Flask app  
+│── data_base.py            # Skills database & matching logic  
+│── requirements.txt        # Dependencies  
+│── README.md               # Project documentation  
+```
+
+---
+
+## 📝 Usage
+
+1️⃣ **Job Seekers:** Upload your resume and a job description to get a **match percentage** and **missing skills**.  
+2️⃣ **Recruiters:** Upload multiple resumes and rank candidates by **job fit**.  
+3️⃣ **Skill Analysis:** Extracts key **technical & soft skills** from resumes using **AI/NLP**.  
+
+---
+
+## Contributors
+
+1️⃣ ***James Akhator*** (Lead Developer).  
+2️⃣ ***Johnpaul Akhator***    
+
+---
+
+## 🎯 Future Enhancements
+
+🔹 **Machine Learning Model** – Improve skill matching accuracy using ML techniques.  
+🔹 **Resume Recommendations** – Provide tailored resume improvement suggestions.  
+🔹 **API Integration** – Allow third-party ATS systems to integrate with CareerConnect.  
+
+---
+
+## 📬 Contact & Contributions
+💡 Want to contribute? Feel free to submit a **pull request**!  
+📩 For inquiries, contact **joakhator@upei.ca**  
