@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Recruiter Dashboard</h1>
+</div>
+<div class="row justify-content-center" id="recruiter">
+  <div class="col-md-10">
+    <div class="card shadow">
+      <div class="card-header bg-secondary py-3 d-flex flex-row align-items-center justify-content-between">
+        <h5 class="m-0 font-weight-bold text-light">Recruiter Analysis</h5>
+      </div>
+      <div class="card-body">
+        <form id="analyzeMultipleForm" onsubmit="analyzeResumes(this); return false;" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label class="form-label">Upload Multiple Resumes (PDFs)</label>
+            <input type="file" class="form-control" name="resumes" multiple accept=".pdf" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" style="font-size: 18px;">Job Description</label>
+            <textarea class="form-control" name="job_description" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-info w-100 bg-secondary text-white" style="font-size: 18px;">Analyze Resumes</button>
+        </form>
+
+        <div id="results" class="analysis-section mt-4"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Assumes showLoading, stopLoading, and showError functions are defined elsewhere.
+  function analyzeResumes(form) {
+    const button = form.querySelector('button');
+    showLoading(button, 'Analyze Resumes');
+    const formData = new FormData(form);
+
+    fetch('/compare-multiple', {  // Ensure URL matches your Flask route.
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {  // Handle HTTP errors.
+        return response.json().then(err => Promise.reject(err));
+      }
+      return response.json();
+    })
+    .then(data => {
+      stopLoading(button, 'Analyze Resumes');
+      displayResults(data);
+    })
+    .catch(error => {
+      stopLoading(button, 'Analyze Resumes');
+      showError(error.error || 'Failed to analyze resumes. Check console for details.');
+      console.error('Error:', error);
+    });
+  }
+
+  function displayResults(data) {
+    const resultsContainer = document.getElementById('results');
+    resultsContainer.innerHTML = `
+      <div class="card shadow">
+        <div class="card-header bg-secondary text-white">
+          <h5>Analysis Results (${data.results.length} Resumes)</h5>
+        </div>
+        <div class="card-body">
+          ${data.results.map(result => `
+            <div class="card mb-3">
+              <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                <div>
+                  <h6>${result.filename}</h6>
+                </div>
+                <div>
+                  <h5 class="${parseFloat(result.match_result.final_match) > 50 ? 'text-white' : 'text-white'}">
+                    Match: ${result.match_result.final_match}
+                  </h5>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <p><strong>Extracted Skills:</strong></p>
+                    <ul>
+                      ${result.analysis.skills.map(skill => `<li>${skill}</li>`).join('')}
+                    </ul>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="progress mb-2">
+                      <div class="progress-bar" role="progressbar" style="width: ${parseFloat(result.match_result.final_match)}%;" aria-valuenow="${parseFloat(result.match_result.final_match)}" aria-valuemin="0" aria-valuemax="100">
+                        ${result.match_result.final_match}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-6">
+                        <h6>Matched Skills</h6>
+                        <ul class="matched-skills">
+                          ${result.skill_comparison.matched_skills.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                      </div>
+                      <div class="col-6">
+                        <h6>Missing Skills</h6>
+                        <ul class="missing-skills">
+                          ${result.skill_comparison.missing_skills.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <p><strong>Extracted Experience:</strong></p>
+                <ul>
+                  ${Array.isArray(result.analysis.experience)
+                    ? result.analysis.experience.map(exp => `<li>${exp}</li>`).join('')
+                    : '<li>No experience data</li>'}
+                </ul>
+                <p><strong>Projects or Extracurriculars:</strong></p>
+                <ul>
+                  ${result.analysis.projects_highlights && result.analysis.projects_highlights.length
+                    ? result.analysis.projects_highlights.map(proj => `<li style="white-space: pre-wrap;">${proj}</li>`).join('')
+                    : '<li>No projects listed</li>'}
+                </ul>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+</script>
+
+{% endblock %}
